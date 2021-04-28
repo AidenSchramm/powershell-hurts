@@ -21,8 +21,11 @@ $RoboticsHash = '9DFAA79A6651A4710711AE334E52B21BF7E2AF479C6EF84EF918B483F35F309
 $FundamentalsDownload = $False
 $FundamentalsHash = '32852B1331DF3F45D61B93980D62D42CB9A333F90F73D9EE90890832B26E4AD2'
 
-$ArtecCert = 'MIIFRTCCBC2gAwIBAgIRAIWIG2z4gs9NOmhMhWDoQUUwDQYJKoZIhvcNAQELBQAwfDELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMSQwIgYDVQQDExtTZWN0aWdvIFJTQSBDb2RlIFNpZ25pbmcgQ0EwHhcNMTkxMTE0MDAwMDAwWhcNMjAxMTEzMjM1OTU5WjCBjzELMAkGA1UEBhMCSlAxETAPBgNVBBEMCDU4MS0wMDY2MQ4wDAYDVQQIDAVPc2FrYTEMMAoGA1UEBwwDWWFvMR0wGwYDVQQJDBQzLTItMjEsIEtpdGFrYW1laWNobzEXMBUGA1UECgwOQVJURUMgQ08uLExURC4xFzAVBgNVBAMMDkFSVEVDIENPLixMVEQuMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuqjiYA532wfiBN6trH/UXnSFeqVJJ7E/CbxuMcII6F/XOqy6y2L6Xs8AyLvdp+8WHJ3Y4ncc9R3q5HKjJ2QWUmk2U03bs3P/yXkdJuSdsFLq2sVlyEyyOB7R4Iv8rc8rDItidThkzlMARNZn5Nj6BMBRUYFaQGKLFOU9N9B0kSp7k+ooJw4bm75/R0tH7SQVScM/ApH2af/piCp3lRU6mgRnbWf3H6pnP5MllX+8p6OrJdANgZqFeMvLIOOOoUW5rOdQe/0t3gOlD6S5Wwj+VFYV/ddXNw064RXyJoGNsfxCw7gSK9VKicjSKumENPsPOIFiJaRuYbhjFNdRy6yzFQIDAQABo4IBrDCCAagwHwYDVR0jBBgwFoAUDuE6qFM6MdWKvsG7rWcaA4WtNA4wHQYDVR0OBBYEFO7mn0g6QhJfcIcA1SmpwXcu4uNuMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoGCCsGAQUFBwMDMBEGCWCGSAGG+EIBAQQEAwIEEDBABgNVHSAEOTA3MDUGDCsGAQQBsjEBAgEDAjAlMCMGCCsGAQUFBwIBFhdodHRwczovL3NlY3RpZ28uY29tL0NQUzBDBgNVHR8EPDA6MDigNqA0hjJodHRwOi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29SU0FDb2RlU2lnbmluZ0NBLmNybDBzBggrBgEFBQcBAQRnMGUwPgYIKwYBBQUHMAKGMmh0dHA6Ly9jcnQuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNvZGVTaWduaW5nQ0EuY3J0MCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5zZWN0aWdvLmNvbTAkBgNVHREEHTAbgRlzLWthZ2F5YW1hQGFydGVjLWtrLmNvLmpwMA0GCSqGSIb3DQEBCwUAA4IBAQA3dteIwsEl1h8l74JyyrPO/6o/gbS9gNu3r01hWvXDuAz8b3VvhoGe8NQ3gnv2d2idi98VSaN9u+nM98pO1qKg3TYIXLU4dCmR4XesFtVO9lNHbaIIGAR1uf2MCUPuLv2jKNj5QdErfkJxHopzemuPhfCeS8woRr3qjFjQER6+Y9vs5+GAdLLF8fvCC0Ku+dncYknjpXryCd3tu+3ixUiZ3hJyfSooTzdr1haSFSZH2Owed6s1x0eMPRvYZ2tXc2MiBGSwnA2q1okKSMH0fpe2WZvFe8yH1JRAwhCAxs524jSXmfdxiycWGNJVEHherOzcvihap56Ho21hyrKoyhyU'
-$SectigoCert = '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'
+$StuduinoDowload = $False
+$StuduinoHash = '8722B42DA261473A7B30BC036F05FFB478833D606E343D8B93AB450576488DD6'
+
+$ArchiveDownload = $False
+$ArchiveHash = '0C3A5517097E72DEA227E746388D61F65A7C2C991139B1E7D697E4D03B837BD9'
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -96,12 +99,13 @@ else {
     }
 }
 
+
 # Check if Fundamentals Assets exists and compare hash
-if (Test-Path -Path $HOME\Documents\FUNdamentalsAssets.zip -PathType Leaf) {
-    $FundamentalsActualHash = Get-FileHash $HOME\Documents\FUNdamentalsAssets.zip
+if (Test-Path -Path $HOME\Documents\fundamentalsassets.zip -PathType Leaf) {
+    $FundamentalsActualHash = Get-FileHash $HOME\Documents\fundamentalsassets.zip
     if ($FundamentalsHash -eq $FundamentalsActualHash.Hash) {
         Write-Host "Fundamentals Assets exist"
-        Expand-Archive -Path $HOME\Documents\FUNdamentalsAssets.zip -DestinationPath $HOME\Documents\FUNdamentalsAssets -Force
+        Expand-Archive -Path $HOME\Documents\fundamentalsassets.zip -DestinationPath $HOME\Documents\fundamentalsassets -Force
     }
     else {
         $FundamentalsDownload = $True
@@ -116,11 +120,43 @@ if ($FundamentalsDownload) {
     Write-Host "Downloading and extracting Fundamentals Assets..." -ForegroundColor Green
     try {
         $source = 'https://archive.org/download/fundamentals-assets/FUNdamentalsAssets.zip'
-        iwr -Uri $source -OutFile $HOME\Documents\FUNdamentalsAssets.zip
-        Expand-Archive -Path $HOME\Documents\FUNdamentalsAssets.zip -DestinationPath $HOME\Documents\FUNdamentalsAssets -Force
+        iwr -Uri $source -OutFile $HOME\Documents\fundamentalsassets.zip
+        Expand-Archive -Path $HOME\Documents\fundamentalsassets.zip -DestinationPath $HOME\Documents\fundamentalsassets -Force
 }
     catch {
         Write-Host "Couldn't extract Fundamentals Assets" -ForegroundColor Red
+        Write-Host $_
+        exit
+    }
+}
+
+
+
+# Check if Image Archive exists and compare hash
+if (Test-Path -Path $HOME\Documents\imagearchive.zip -PathType Leaf) {
+    $ArchiveActualHash = Get-FileHash $HOME\Documents\imagearchive.zip
+    if ($ArchiveHash -eq $ArchiveActualHash.Hash) {
+        Write-Host "Image Archive exists"
+        Expand-Archive -Path $HOME\Documents\imagearchive.zip -DestinationPath $HOME\Documents\imagearchive -Force
+    }
+    else {
+        $ArchiveDownload = $True
+    }
+}
+else {
+    $ArchiveDownload = $True
+}
+
+# Download and extract "ImageArchive.zip"
+if ($ArchiveDownload) {
+    Write-Host "Downloading and extracting Image Archive..." -ForegroundColor Green
+    try {
+        $source = 'https://archive.org/download/image-archive/ImageArchive.zip'
+        iwr -Uri $source -OutFile $HOME\Documents\imagearchive.zip
+        Expand-Archive -Path $HOME\Documents\imagearchive.zip -DestinationPath $HOME\Documents\imagearchive -Force
+}
+    catch {
+        Write-Host "Couldn't extract Image Archive" -ForegroundColor Red
         Write-Host $_
         exit
     }
@@ -141,6 +177,8 @@ else {
     $RoboticsDownload = $True
 }
    
+
+
 
 # Download Robotics PDF
 if ($RoboticsDownload) {
@@ -189,6 +227,42 @@ catch {
 #>
 
 
+
+
+
+# Check if Studuino Software exists and compare hash
+if (Test-Path -Path $HOME\Documents\studuino.zip -PathType Leaf) {
+    $StuduinoActualHash = Get-FileHash $HOME\Documents\studuino.zip
+    if ($StuduinoHash -eq $StuduinoActualHash.Hash) {
+        Write-Host "Studuino Software exists"
+    }
+    else {
+        $StuduinoDownload = $True
+    }
+}
+else {
+    $StuduinoDowload = $True
+}   
+
+
+# Install Artec Studuino Software
+if ($StuduinoDowload) {
+    Write-Host "Installing Artec Studuino Software..." -ForegroundColor Green
+    try {
+    iwr -useb 'https://www.artec-kk.co.jp/studuino/data/software/cdn/en/Studuino.zip' -OutFile $HOME\Documents\Studuino.zip | Out-Null
+    New-Item -ItemType Directory -Force -Path $HOME\Documents\studuino | Out-Null
+    Expand-Archive -Path $HOME\Documents\studuino.zip -DestinationPath $HOME\Documents -Force
+}
+    catch {
+    Write-Host "Couldn't Install Artec Studuino Software" -ForegroundColor Red
+    Write-Host $_
+    exit
+}
+}
+
+
+
+
 # Move everything from $HOME\Downloads to $HOME\Documents\garbage
 Write-Host "Clearing Downloads folder..." -ForegroundColor Green
 try {
@@ -201,61 +275,57 @@ catch {
     exit
 }
 
-# Import certificates for ClickOnce
-Write-Host "Importing Artec cert..." -ForegroundColor Green
-try {
-    Set-Content -Path $HOME\Documents\artec.cer -Value $ArtecCert
-    Import-Certificate $HOME\Documents\artec.cer -CertStoreLocation 'Cert:\LocalMachine\Root' | Out-Null
-}
-catch {
-    Write-Host "Couldn't import Artec cert" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
-
-
-
-# Import certificates for ClickOnce
-Write-Host "Importing Sectigo cert..." -ForegroundColor Green
-try {
-    Set-Content -Path $HOME\Documents\sectigo.cer -Value $SectigoCert
-    Import-Certificate $HOME\Documents\sectigo.cer -CertStoreLocation 'Cert:\LocalMachine\Root' | Out-Null
-}
-catch {
-    Write-Host "Couldn't import Sectigo cert" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
-
-
-
-
-# Install Artec Studuino Software
-Write-Host "Installing Artec Studuino Software..." -ForegroundColor Green
-try {
-    # iwr -useb 'https://www.artec-kk.co.jp/studuino/data/software/cdn/en/Studuino.zip' -OutFile $HOME\Documents\Studuino.zip | Out-Null
-    New-Item -ItemType Directory -Force -Path $HOME\Documents\studuino | Out-Null
-    # Expand-Archive -Path $HOME\Documents\studuino.zip -DestinationPath $HOME\Documents -Force
-}
-catch {
-    Write-Host "Couldn't Install Artec Studuino Software" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
-
-
 
 # Organize Desktop
 Write-Host "Organizing Desktop..." -ForegroundColor Green
 try {
     New-Item -ItemType Directory -Force -Path $HOME\Documents\desktop | Out-Null
-    Move-Item -Path $HOME\Desktop\* -Destination $HOME\Documents\desktop -Force | Out-Null
+    Move-Item -Path $HOME\Desktop\* -Force -Destination $HOME\Documents\desktop | Out-Null
 }
 catch {
     Write-Host "Couldn't organize Desktop" -ForegroundColor Red
     Write-Host $_
     exit
 }
+
+
+# Copy FUNdamentals Assets to Desktop
+Write-Host "Adding Fundamentals Assets to Desktop..." -ForegroundColor Green
+try {
+    New-Item -ItemType Directory -Force -Path $HOME\Desktop\FUNdamentalsAssets | Out-Null
+    Copy-Item -Path $HOME\Documents\fundamentalsassets\* -Destination $HOME\Desktop\FUNdamentalsAssets | Out-Null
+}
+catch {
+    Write-Host "Couldn't add Fundamentals Assets to Desktop" -ForegroundColor Red
+    Write-Host $_
+    exit
+}
+
+# Copy Image Archive to Desktop
+Write-Host "Adding Image Archive to Desktop..." -ForegroundColor Green
+try {
+    New-Item -ItemType Directory -Force -Path $HOME\Desktop\ImageArchive | Out-Null
+    Copy-Item -Path $HOME\Documents\imagearchive\* -Destination $HOME\Desktop\ImageArchive | Out-Null
+}
+catch {
+    Write-Host "Couldn't add Image Archive to Desktop" -ForegroundColor Red
+    Write-Host $_
+    exit
+}
+
+
+# Copy Robotics to Desktop
+Write-Host "Adding Robotics to Desktop..." -ForegroundColor Green
+try {
+    New-Item -ItemType Directory -Force -Path $HOME\Desktop\Robotics| Out-Null
+    Copy-Item -Path $HOME\Documents\robotics\* -Destination $HOME\Desktop\Robotics| Out-Null
+}
+catch {
+    Write-Host "Couldn't add Robotics to Desktop" -ForegroundColor Red
+    Write-Host $_
+    exit
+}
+
 
 
 # Add shortcuts to Desktop
@@ -279,9 +349,6 @@ try {
     $Roblox.TargetPath = $RobloxLocation
     $Roblox.Arguments = "-ide"
     $Roblox.Save()
-
-    # White-Green assets
-
 
     # Studiuno software
     $StuduinoShortcut = "$HOME\Desktop\Studuino.lnk"
