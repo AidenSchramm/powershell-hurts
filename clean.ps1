@@ -13,6 +13,10 @@
 
 
 # VARIABLES
+
+$username=( ( Get-WMIObject -class Win32_ComputerSystem | Select-Object -ExpandProperty username ) -split '\\' )[1]
+$Directory = "C:\Users\$username"
+
 $ConfirmPreference = 'None'
 
 $RoboticsDownload = $False
@@ -26,6 +30,11 @@ $StuduinoHash = '8722B42DA261473A7B30BC036F05FFB478833D606E343D8B93AB450576488DD
 
 $ArchiveDownload = $False
 $ArchiveHash = '0C3A5517097E72DEA227E746388D61F65A7C2C991139B1E7D697E4D03B837BD9'
+
+$RobloxDownload = $True
+
+$ChromeDownload = $True
+$ChromeUrl = 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BE8E3A411-32BE-217B-5101-1E794CAFE2CE%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe'
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -44,14 +53,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
 # Install NuGet to get packages
 if ((Get-PackageProvider -Name NuGet -ForceBootstrap).version -lt 2.8.5.201 | Out-Null ) {
     Write-Host "Adding NuGet as a Package Provider..." -ForegroundColor Green
-    try {
-        Install-PackageProvider -Name "NuGet" -MinimumVersion 2.8.5.201 -Scope CurrentUser -Confirm:$false -ForceBootstrap
-    }
-    catch {
-        Write-Host "Couldn't add NuGet as a Package Provider" -ForegroundColor Red
-        Write-Host $_ -ForegroundColor Red
-        exit
-    }
+    Install-PackageProvider -Name "NuGet" -MinimumVersion 2.8.5.201 -Scope CurrentUser -Confirm:$false -ForceBootstrap
 }
 else {
     Write-Host "Version of NuGet installed = " (Get-PackageProvider -Name NuGet).version
@@ -68,44 +70,24 @@ else {
 
     # Trust the "PsGallery" NuGet repository
     Write-Host "Trusting 'PSGallery' repository..." -ForegroundColor Green
-    try {
-        Set-PSRepository -Name "PsGallery" -InstallationPolicy Trusted
-    }
-    catch {
-        Write-Host "Couldn't trust 'PSGallery' repository" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    Set-PSRepository -Name "PsGallery" -InstallationPolicy Trusted
+
 
     # Install PSChromeProfile module
-    try {
-        Install-Module -Name PSChromeProfile -Scope CurrentUser -AllowClobber
-    }
-    catch {
-        Write-Host "Couldn't install 'PSChromeProfile' module" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    Install-Module -Name PSChromeProfile -Scope CurrentUser -AllowClobber
 
     # Set "PsGallery" NuGet repository to untrusted
     Write-Host "Set 'PSGallery' repository to untrusted..." -ForegroundColor Yellow
-    try {
-        Set-PSRepository -Name "PsGallery" -InstallationPolicy Trusted
-    }
-    catch {
-        Write-Host "Couldn't set 'PSGallery' repository to untrusted" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    Set-PSRepository -Name "PsGallery" -InstallationPolicy Trusted
 }
 
 
 # Check if Fundamentals Assets exists and compare hash
-if (Test-Path -Path $HOME\Documents\fundamentalsassets.zip -PathType Leaf) {
-    $FundamentalsActualHash = Get-FileHash $HOME\Documents\fundamentalsassets.zip
+if (Test-Path -Path $Directory\Documents\fundamentalsassets.zip -PathType Leaf) {
+    $FundamentalsActualHash = Get-FileHash $Directory\Documents\fundamentalsassets.zip
     if ($FundamentalsHash -eq $FundamentalsActualHash.Hash) {
         Write-Host "Fundamentals Assets exist"
-        Expand-Archive -Path $HOME\Documents\fundamentalsassets.zip -DestinationPath $HOME\Documents\fundamentalsassets -Force
+        Expand-Archive -Path $Directory\Documents\fundamentalsassets.zip -DestinationPath $Directory\Documents\fundamentalsassets -Force
     }
     else {
         $FundamentalsDownload = $True
@@ -118,26 +100,19 @@ else {
 # Download and extract "FundamentalsAssets.zip"
 if ($FundamentalsDownload) {
     Write-Host "Downloading and extracting Fundamentals Assets..." -ForegroundColor Green
-    try {
-        $source = 'https://archive.org/download/fundamentals-assets/FUNdamentalsAssets.zip'
-        iwr -Uri $source -OutFile $HOME\Documents\fundamentalsassets.zip
-        Expand-Archive -Path $HOME\Documents\fundamentalsassets.zip -DestinationPath $HOME\Documents\fundamentalsassets -Force
-}
-    catch {
-        Write-Host "Couldn't extract Fundamentals Assets" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    $source = 'https://archive.org/download/fundamentals-assets/FUNdamentalsAssets.zip'
+    iwr -Uri $source -OutFile $Directory\Documents\fundamentalsassets.zip
+    Expand-Archive -Path $Directory\Documents\fundamentalsassets.zip -DestinationPath $Directory\Documents\fundamentalsassets -Force
 }
 
 
 
 # Check if Image Archive exists and compare hash
-if (Test-Path -Path $HOME\Documents\imagearchive.zip -PathType Leaf) {
-    $ArchiveActualHash = Get-FileHash $HOME\Documents\imagearchive.zip
+if (Test-Path -Path $Directory\Documents\imagearchive.zip -PathType Leaf) {
+    $ArchiveActualHash = Get-FileHash $Directory\Documents\imagearchive.zip
     if ($ArchiveHash -eq $ArchiveActualHash.Hash) {
         Write-Host "Image Archive exists"
-        Expand-Archive -Path $HOME\Documents\imagearchive.zip -DestinationPath $HOME\Documents\imagearchive -Force
+        Expand-Archive -Path $Directory\Documents\imagearchive.zip -DestinationPath $Directory\Documents\imagearchive -Force
     }
     else {
         $ArchiveDownload = $True
@@ -150,22 +125,15 @@ else {
 # Download and extract "ImageArchive.zip"
 if ($ArchiveDownload) {
     Write-Host "Downloading and extracting Image Archive..." -ForegroundColor Green
-    try {
-        $source = 'https://archive.org/download/image-archive/ImageArchive.zip'
-        iwr -Uri $source -OutFile $HOME\Documents\imagearchive.zip
-        Expand-Archive -Path $HOME\Documents\imagearchive.zip -DestinationPath $HOME\Documents\imagearchive -Force
-}
-    catch {
-        Write-Host "Couldn't extract Image Archive" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    $source = 'https://archive.org/download/image-archive/ImageArchive.zip'
+    iwr -Uri $source -OutFile $Directory\Documents\imagearchive.zip
+    Expand-Archive -Path $Directory\Documents\imagearchive.zip -DestinationPath $Directory\Documents\imagearchive -Force
 }
 
 
 # Check if Robotics PDF exists and compare hash
-if (Test-Path -Path $HOME\Documents\robotics\robotics-beginner.pdf -PathType Leaf) {
-    $RoboticsActualHash = Get-FileHash $HOME\Documents\robotics\robotics-beginner.pdf
+if (Test-Path -Path $Directory\Documents\robotics\robotics-beginner.pdf -PathType Leaf) {
+    $RoboticsActualHash = Get-FileHash $Directory\Documents\robotics\robotics-beginner.pdf
     if ($RoboticsHash -eq $RoboticsActualHash.Hash) {
         Write-Host "Robotics curriculum exists"
     }
@@ -183,9 +151,9 @@ else {
 # Download Robotics PDF
 if ($RoboticsDownload) {
     Write-Host "Downloading and Robotics curriculum..." -ForegroundColor Green
-    try {
+
     $GoogleFileId = "12gIq7mU76MxUqH80i0Vkv1NGQ_r8Da5i"
-    New-Item -ItemType Directory -Force -Path $HOME\Documents\robotics | Out-Null
+    New-Item -ItemType Directory -Force -Path $Directory\Documents\robotics | Out-Null
 
     # set protocol to tls version 1.2
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -202,13 +170,7 @@ if ($RoboticsDownload) {
     Remove-Item "_tmp.txt"
 
     # Download the real file
-    Invoke-WebRequest -Uri "https://drive.google.com/uc?export=download&confirm=${confirmCode}&id=$GoogleFileId" -OutFile $HOME\Documents\robotics\robotics-beginner.pdf -WebSession $googleDriveSession
-}
-    catch {
-        Write-Host "Couldn't download Robotics curriculum" -ForegroundColor Red
-        Write-Host $_
-        exit
-    }
+    Invoke-WebRequest -Uri "https://drive.google.com/uc?export=download&confirm=${confirmCode}&id=$GoogleFileId" -OutFile $Directory\Documents\robotics\robotics-beginner.pdf -WebSession $googleDriveSession
 }
 
 <#
@@ -231,8 +193,8 @@ catch {
 
 
 # Check if Studuino Software exists and compare hash
-if (Test-Path -Path $HOME\Documents\studuino.zip -PathType Leaf) {
-    $StuduinoActualHash = Get-FileHash $HOME\Documents\studuino.zip
+if (Test-Path -Path $Directory\Documents\studuino.zip -PathType Leaf) {
+    $StuduinoActualHash = Get-FileHash $Directory\Documents\studuino.zip
     if ($StuduinoHash -eq $StuduinoActualHash.Hash) {
         Write-Host "Studuino Software exists"
     }
@@ -248,91 +210,80 @@ else {
 # Install Artec Studuino Software
 if ($StuduinoDowload) {
     Write-Host "Installing Artec Studuino Software..." -ForegroundColor Green
-    try {
-    iwr -useb 'https://www.artec-kk.co.jp/studuino/data/software/cdn/en/Studuino.zip' -OutFile $HOME\Documents\Studuino.zip | Out-Null
-    New-Item -ItemType Directory -Force -Path $HOME\Documents\studuino | Out-Null
-    Expand-Archive -Path $HOME\Documents\studuino.zip -DestinationPath $HOME\Documents -Force
-}
-    catch {
-    Write-Host "Couldn't Install Artec Studuino Software" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
+    iwr -useb 'https://www.artec-kk.co.jp/studuino/data/software/cdn/en/Studuino.zip' -OutFile $Directory\Documents\Studuino.zip | Out-Null
+    New-Item -ItemType Directory -Force -Path $Directory\Documents\studuino | Out-Null
+    Expand-Archive -Path $Directory\Documents\studuino.zip -DestinationPath $Directory\Documents -Force
 }
 
+# Install Roblox Studio Software
+if ($RobloxDownload) {
+    Write-Host "Installing Roblox Studio Software..." -ForegroundColor Green
+    iwr -useb 'https://setup.rbxcdn.com/RobloxStudioLauncherBeta.exe' -OutFile $Directory\Documents\robloxstudiolauncherbeta.exe | Out-Null
+}
+
+
+# Install Google Chrome Software
+if ($ChromeDownload) {
+    Write-Host "Installing Google Chrome..." -ForegroundColor Green
+    iwr -useb $ChromeUrl -OutFile $Directory\Documents\chromeinstaller.exe | Out-Null
+}
+
+
+# Run and then kill Chrome Installer after 30 seconds
+
+$ChromeProcess = Start-Process -FilePath $Directory\Documents\chromeinstaller.exe
+$ChromeProcess
+
+Start-Sleep -Seconds 30
+Stop-Process -Name "chrome"
+
+
+# Run and then kill Roblox Studio after 15 seconds
+
+$StudioProcess = Start-Process -FilePath $Directory\Documents\robloxstudiolauncherbeta.exe
+$StudioProcess
+
+Start-Sleep -Seconds 15
+Stop-Process -Name "RobloxStudioBeta"
 
 
 
-# Move everything from $HOME\Downloads to $HOME\Documents\garbage
+# Move everything from $Directory\Downloads to $Directory\Documents\garbage
 Write-Host "Clearing Downloads folder..." -ForegroundColor Green
-try {
-    New-Item -ItemType Directory -Force -Path $HOME\Documents\garbage | Out-Null
-    Move-Item -Path $HOME\Downloads\* -Destination $HOME\Documents\garbage | Out-Null
-}
-catch {
-    Write-Host "Couldn't clear Downloads folder" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
+
+New-Item -ItemType Directory -Force -Path $Directory\Documents\garbage | Out-Null
+Move-Item -Path $Directory\Downloads\* -Destination $Directory\Documents\garbage | Out-Null
 
 
 # Organize Desktop
 Write-Host "Organizing Desktop..." -ForegroundColor Green
-try {
-    New-Item -ItemType Directory -Force -Path $HOME\Documents\desktop | Out-Null
-    Move-Item -Path $HOME\Desktop\* -Force -Destination $HOME\Documents\desktop | Out-Null
-}
-catch {
-    Write-Host "Couldn't organize Desktop" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
+New-Item -ItemType Directory -Force -Path $Directory\Documents\desktop | Out-Null
+Move-Item -Path $Directory\Desktop\* -Force -Destination $Directory\Documents\desktop | Out-Null
 
 
 # Copy FUNdamentals Assets to Desktop
 Write-Host "Adding Fundamentals Assets to Desktop..." -ForegroundColor Green
-try {
-    New-Item -ItemType Directory -Force -Path $HOME\Desktop\FUNdamentalsAssets | Out-Null
-    Copy-Item -Path $HOME\Documents\fundamentalsassets\* -Destination $HOME\Desktop\FUNdamentalsAssets | Out-Null
-}
-catch {
-    Write-Host "Couldn't add Fundamentals Assets to Desktop" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
+New-Item -ItemType Directory -Force -Path $Directory\Desktop\FUNdamentalsAssets | Out-Null
+Copy-Item -Path $Directory\Documents\fundamentalsassets\* -Destination $Directory\Desktop\FUNdamentalsAssets | Out-Null
+
 
 # Copy Image Archive to Desktop
 Write-Host "Adding Image Archive to Desktop..." -ForegroundColor Green
-try {
-    New-Item -ItemType Directory -Force -Path $HOME\Desktop\ImageArchive | Out-Null
-    Copy-Item -Path $HOME\Documents\imagearchive\* -Destination $HOME\Desktop\ImageArchive | Out-Null
-}
-catch {
-    Write-Host "Couldn't add Image Archive to Desktop" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
+New-Item -ItemType Directory -Force -Path $Directory\Desktop\ImageArchive | Out-Null
+Copy-Item -Path $Directory\Documents\imagearchive\* -Destination $Directory\Desktop\ImageArchive | Out-Null
 
 
 # Copy Robotics to Desktop
 Write-Host "Adding Robotics to Desktop..." -ForegroundColor Green
-try {
-    New-Item -ItemType Directory -Force -Path $HOME\Desktop\Robotics| Out-Null
-    Copy-Item -Path $HOME\Documents\robotics\* -Destination $HOME\Desktop\Robotics| Out-Null
-}
-catch {
-    Write-Host "Couldn't add Robotics to Desktop" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
-
+New-Item -ItemType Directory -Force -Path $Directory\Desktop\Robotics| Out-Null
+Copy-Item -Path $Directory\Documents\robotics\* -Destination $Directory\Desktop\Robotics| Out-Null
 
 
 # Add shortcuts to Desktop
 Write-Host "Adding shortcuts to Desktop..." -ForegroundColor Green
-try {
+
     # Chrome shortcut
-    $ChromeShortcut = "$HOME\Desktop\Chrome.lnk"
+    $ChromeShortcut = "$Directory\Desktop\Chrome.lnk"
     $ChromeLocation = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
     $WScriptShell = New-Object -ComObject WScript.Shell
     $Chrome = $WScriptShell.CreateShortcut($ChromeShortcut)
@@ -342,8 +293,8 @@ try {
     
 
     # Roblox Studio shortcut
-    $RobloxShortcut = "$HOME\Desktop\Roblox Studio.lnk"
-    $RobloxLocation = "$HOME\AppData\Local\Roblox\Versions\RobloxStudioLauncherBeta.exe"
+    $RobloxShortcut = "$Directory\Desktop\Roblox Studio.lnk"
+    $RobloxLocation = Resolve-Path -Path "$Directory\AppData\Local\Roblox\Versions\*\RobloxStudioLauncherBeta.exe" | Convert-Path
     $WScriptShell = New-Object -ComObject WScript.Shell
     $Roblox = $WScriptShell.CreateShortcut($RobloxShortcut)
     $Roblox.TargetPath = $RobloxLocation
@@ -351,17 +302,11 @@ try {
     $Roblox.Save()
 
     # Studiuno software
-    $StuduinoShortcut = "$HOME\Desktop\Studuino.lnk"
-    $StuduinoLocation = "$HOME\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1\ArtecRobotStartUp.exe"
+    $StuduinoShortcut = "$Directory\Desktop\Studuino.lnk"
+    $StuduinoLocation = "$Directory\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1\ArtecRobotStartUp.exe"
     $WScriptShell = New-Object -ComObject WScript.Shell
     $Studuino = $WScriptShell.CreateShortcut($StuduinoShortcut)
     $Studuino.TargetPath = $StuduinoLocation
-    $Studuino.WorkingDirectory = "$HOME\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1"
+    $Studuino.WorkingDirectory = "$Directory\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1"
     $Studuino.Save()
 
-}
-catch {
-    Write-Host "Couldn't add shortcuts to Desktop" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
