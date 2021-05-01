@@ -258,7 +258,7 @@ Stop-Process -Name "RobloxStudioBeta" -Force -Confirm:$false
 
 # Run Minecraft silent MSI installation
 
-$MinecraftProcess = Start-Process -FilePath $Directory\Documents\minecraftinstaller.exe -ArgumentList "/quiet /norestart"
+$MinecraftProcess = Start-Process -FilePath $Directory\Documents\minecraftinstaller.msi -ArgumentList "/quiet /norestart"
 $MinecraftProcess
 
 # Move everything from $Directory\Downloads to $Directory\Documents\garbage
@@ -307,7 +307,12 @@ Write-Host "Adding shortcuts to Desktop..." -ForegroundColor Green
 
     # Roblox Studio shortcut
     $RobloxShortcut = "$Directory\Desktop\Roblox Studio.lnk"
-    $RobloxLocation = Resolve-Path -Path "$Directory\AppData\Local\Roblox\Versions\*\RobloxStudioLauncherBeta.exe" | Convert-Path
+    if (Test-Path -Path $Directory\AppData\Local\Roblox\Versions\*\RobloxStudioLauncherBeta.exe -PathType Leaf) {
+        $RobloxLocation = Resolve-Path -Path $Directory\AppData\Local\Roblox\Versions\*\RobloxStudioLauncherBeta.exe | Convert-Path
+    }
+    else {
+        $RobloxLocation = Resolve-Path -Path $Directory\AppData\Local\Roblox\Versions\RobloxStudioLauncherBeta.exe | Convert-Path
+    }
     $WScriptShell = New-Object -ComObject WScript.Shell
     $Roblox = $WScriptShell.CreateShortcut($RobloxShortcut)
     $Roblox.TargetPath = $RobloxLocation
