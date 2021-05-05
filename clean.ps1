@@ -16,6 +16,7 @@
 
 $username=( ( Get-WMIObject -class Win32_ComputerSystem | Select-Object -ExpandProperty username ) -split '\\' )[1]
 $Directory = "C:\Users\$username"
+$StartMenu = "$Directory\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
 
 $ConfirmPreference = 'None'
 
@@ -37,6 +38,11 @@ $ChromeDownload = $True
 $ChromeUrl = 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BE8E3A411-32BE-217B-5101-1E794CAFE2CE%7D%26lang%3Den%26browser%3D4%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe'
 
 $MinecraftDownload = $True
+
+$OBSDownload = $True
+
+$MCreatorDownload = $True
+
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -237,6 +243,23 @@ if ($MinecraftDownload) {
 }
 
 
+# Install OBS Software
+if ($OBSDownload) {
+    Write-Host "Installing OBS..." -ForegroundColor Green
+    iwr -useb 'https://cdn-fastly.obsproject.com/downloads/OBS-Studio-26.1.1-Full-Installer-x64.exe' -OutFile $Directory\Documents\obsinstaller.exe
+
+}
+
+# Install MCreator Software
+if ($MCreatorDownload) {
+    Write-Host "Installing MCreator..." -ForegroundColor Green
+    iwr -useb 'https://mcreator.net/repository/2021-1/MCreator%202021.1%20Windows%2064bit.zip' -OutFile $Directory\Documents\mcreator.zip
+    Remove-Item -Path $Directory\Documents\mcreator -Recurse -Force -Confirm:$False | Out-Null
+    Expand-Archive -Path $Directory\Documents\mcreator.zip -DestinationPath $Directory\Documents -Force
+    Move-Item -Path $Directory\Documents\MCreator20211 -Destination $Directory\Documents\mcreator -Force
+}
+   
+<#
 
 # Run and then kill Chrome Installer after 30 seconds
 
@@ -261,18 +284,44 @@ Stop-Process -Name "RobloxStudioBeta" -Force -Confirm:$false
 $MinecraftProcess = Start-Process -FilePath $Directory\Documents\minecraftinstaller.msi -ArgumentList "/quiet /norestart"
 $MinecraftProcess
 
+# Run OBS silent installation
+
+$OBSProcess = Start-Process -FilePath $Directory\Documents\obsinstaller.exe -ArgumentList "/S"
+$OBSProcess
+
+#>
+
+
+
+
+
+
+
 # Move everything from $Directory\Downloads to $Directory\Documents\garbage
 Write-Host "Clearing Downloads folder..." -ForegroundColor Green
 
 New-Item -ItemType Directory -Force -Path $Directory\Documents\garbage | Out-Null
 Move-Item -Path $Directory\Downloads\* -Destination $Directory\Documents\garbage | Out-Null
 
+# Configure Chrome
+
+$LocalAppData = "$Directory\AppData\Local"
+$ChromeDefaults = Join-Path $LocalAppData "Google\Chrome\User Data\Default"
+$ChromePrefFile = Join-Path $ChromeDefaults "Preferences"
+$Settings = Get-Content $ChromePrefFile | ConvertFrom-Json
+
+
+
 
 # Organize Desktop
 Write-Host "Organizing Desktop..." -ForegroundColor Green
+
+Remove-Item -Path $Directory\Documents\desktop\FundamentalsAssets -Recurse -Force -Confirm:$false | Out-Null
+Remove-Item -Path $Directory\Documents\desktop\ImageArchive -Recurse -Force -Confirm:$false | Out-Null
+Remove-Item -Path $Directory\Documents\desktop\Robotics -Recurse -Force -Confirm:$false | Out-Null
+
 New-Item -ItemType Directory -Force -Path $Directory\Documents\desktop | Out-Null
 Move-Item -Path $Directory\Desktop\* -Force -Destination $Directory\Documents\desktop | Out-Null
-
 
 # Copy FUNdamentals Assets to Desktop
 Write-Host "Adding Fundamentals Assets to Desktop..." -ForegroundColor Green
@@ -304,6 +353,7 @@ Write-Host "Adding shortcuts to Desktop..." -ForegroundColor Green
     $Chrome.WorkingDirectory = "C:\Program Files (x86)\Google\Chrome\Application"
     $Chrome.Save()
     
+    
 
     # Roblox Studio shortcut
     $RobloxShortcut = "$Directory\Desktop\Roblox Studio.lnk"
@@ -319,6 +369,8 @@ Write-Host "Adding shortcuts to Desktop..." -ForegroundColor Green
     $Roblox.Arguments = "-ide"
     $Roblox.Save()
 
+    
+
     # Studiuno software
     $StuduinoShortcut = "$Directory\Desktop\Studuino.lnk"
     $StuduinoLocation = "$Directory\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1\ArtecRobotStartUp.exe"
@@ -327,4 +379,27 @@ Write-Host "Adding shortcuts to Desktop..." -ForegroundColor Green
     $Studuino.TargetPath = $StuduinoLocation
     $Studuino.WorkingDirectory = "$Directory\Documents\studuino\Application Files\ArtecRobotStartUp_1_5_7_1"
     $Studuino.Save()
+
+
+
+    # Mcreator software
+    $MCreatorShortcut = "$StartMenu\MCreator.lnk"
+    $McreatorLocation = "$Directory\Documents\mcreator\MCreator.exe"
+    $WScriptShell = New-Object -ComObject WScript.Shell
+    $MCreator = $WScriptShell.CreateShortcut($MCreatorShortcut)
+    $MCreator.TargetPath = $MCreatorLocation
+    $MCreator.Save()
+
+
+# Add shortcuts to start menu
+Write-Host "Adding shortcuts to Start Menu..." -ForegroundColor Green
+   
+   Copy-Item -Path $ChromeShortcut -Destination $StartMenu\. -Force
+   Copy-Item -Path $RobloxShortcut -Destination $StartMenu\. -Force
+   Copy-Item -Path $StuduinoShortcut -Destination $StartMenu\. -Force
+
+
+# Remove Public user desktop shortcuts because reasons
+
+Remove-Item -Path C:\Users\Public\Desktop\* -Recurse -Force -Confirm:$False
 
