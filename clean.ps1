@@ -181,7 +181,7 @@ if ($RoboticsDownload) {
     Invoke-WebRequest -Uri "https://drive.google.com/uc?export=download&confirm=${confirmCode}&id=$GoogleFileId" -OutFile $Directory\Documents\robotics\robotics-beginner.pdf -WebSession $googleDriveSession
 }
 
-<#
+
 
 # Download and execute Windows Debloater
 Write-Host "Downloading and executing Windows Debloater..." -ForegroundColor Green
@@ -194,7 +194,7 @@ catch {
     exit
 }
 
-#>
+
 
 
 
@@ -259,7 +259,7 @@ if ($MCreatorDownload) {
     Move-Item -Path $Directory\Documents\MCreator20211 -Destination $Directory\Documents\mcreator -Force
 }
    
-<#
+
 
 # Run and then kill Chrome Installer after 30 seconds
 
@@ -289,7 +289,7 @@ $MinecraftProcess
 $OBSProcess = Start-Process -FilePath $Directory\Documents\obsinstaller.exe -ArgumentList "/S"
 $OBSProcess
 
-#>
+
 
 
 
