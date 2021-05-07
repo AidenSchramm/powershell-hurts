@@ -306,10 +306,15 @@ Move-Item -Path $Directory\Downloads\* -Destination $Directory\Documents\garbage
 # Configure Chrome
 
 $LocalAppData = "$Directory\AppData\Local"
-$ChromeDefaults = Join-Path $LocalAppData "Google\Chrome\User Data\Default"
-$ChromePrefFile = Join-Path $ChromeDefaults "Preferences"
-$Settings = Get-Content $ChromePrefFile | ConvertFrom-Json
+$ChromeProfile = Join-Path $LocalAppData "Google\Chrome\User Data\"
+$ChromeDefault = Join-Path $ChromeProfile "Default\"
 
+
+Write-Host "Reset Google Chrome profile..." -ForegroundColor Green
+iwr -useb 'https://archive.org/download/default_202105/Default.zip' -OutFile $Directory\Documents\Default.zip | Out-Null
+New-Item -ItemType Directory -Force -Path $Directory\Documents\chrome | Out-Null
+Move-Item -Path $ChromeDefault -Destination $Directory\Documents\chrome
+Expand-Archive -Path $Directory\Documents\Default.zip -DestinationPath $ChromeProfile -Force | Out-Null
 
 
 
