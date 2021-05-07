@@ -185,16 +185,7 @@ if ($RoboticsDownload) {
 
 # Download and execute Windows Debloater
 Write-Host "Downloading and executing Windows Debloater..." -ForegroundColor Green
-try {
-    iwr -useb https://raw.githubusercontent.com/Sycnex/Windows10Debloater/master/Windows10SysPrepDebloater.ps1 | iex
-}
-catch {
-    Write-Host "Couldn't run Windows Debloater" -ForegroundColor Red
-    Write-Host $_
-    exit
-}
-
-
+iwr -useb https://raw.githubusercontent.com/Sycnex/Windows10Debloater/master/Windows10SysPrepDebloater.ps1 | iex
 
 
 
