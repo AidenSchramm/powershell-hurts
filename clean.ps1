@@ -43,6 +43,8 @@ $OBSDownload = $True
 
 $MCreatorDownload = $True
 
+$ChromeExtensionScriptUrl = 'https://bitbucket.org/svalding/psbrowserextensions/raw/88b200bad8845acbb91d19fdc96cf9dee0303253/New-ChromeExtension.ps1'
+$ChromeExtensionId = 'cjpalhdlnbpafiamejdnhcphjbkeiagm'
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -266,7 +268,7 @@ Stop-Process -Name "chrome" -Force -Confirm:$false
 $StudioProcess = Start-Process -FilePath $Directory\Documents\robloxstudiolauncherbeta.exe
 $StudioProcess
 
-Start-Sleep -Seconds 15
+Start-Sleep -Seconds 20
 Stop-Process -Name "RobloxStudioBeta" -Force -Confirm:$false
 
 
@@ -395,7 +397,15 @@ Write-Host "Adding shortcuts to Start Menu..." -ForegroundColor Green
    Copy-Item -Path $StuduinoShortcut -Destination $StartMenu\. -Force
 
 
+# Download and run script to install chrome extension
+
+Write-Host "Installing Ublock Origin..." -ForegroundColor Green
+iwr -Uri $ChromeExtensionScriptUrl -OutFile $Directory\Documents\New-ChromeExtension.ps1
+Import-Module $Directory\Documents\New-ChromeExtension.ps1
+New-ChromeExtension -ExtensionID $ChromeExtensionId -Hive Machine
+
+
+
 # Remove Public user desktop shortcuts because reasons
 
 Remove-Item -Path C:\Users\Public\Desktop\* -Recurse -Force -Confirm:$False
-
