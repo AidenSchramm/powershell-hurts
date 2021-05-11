@@ -14,6 +14,7 @@
 
 # VARIABLES
 
+
 $username=( ( Get-WMIObject -class Win32_ComputerSystem | Select-Object -ExpandProperty username ) -split '\\' )[1]
 $Directory = "C:\Users\$username"
 $StartMenu = "$Directory\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
@@ -45,6 +46,23 @@ $MCreatorDownload = $True
 
 $ChromeExtensionScriptUrl = 'https://bitbucket.org/svalding/psbrowserextensions/raw/88b200bad8845acbb91d19fdc96cf9dee0303253/New-ChromeExtension.ps1'
 $ChromeExtensionId = 'cjpalhdlnbpafiamejdnhcphjbkeiagm'
+
+
+$RegEx = '(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}'
+
+$InitialGUID = cmd /c "powercfg /getactivescheme"
+$DefaultGUID = [regex]::Match($InitialGUID,$RegEx).Value
+
+$InitialTempGUID = cmd /c "powercfg /duplicatescheme $DefaultGUID"
+$TempGUID = [regex]::Match($InitialGUID,$RegEx).Value
+
+
+# Temporarily disable sleep while script runs
+cmd /c "powercfg /setactive $TempGUID"
+cmd /c "powercfg /changename $TempGUID 'tmp scheme'"
+cmd /c "powercfg /change standby-timeout-ac 0"
+cmd /c "powercfg /change hibernate-timeout-ac 0"
+
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -409,3 +427,7 @@ New-ChromeExtension -ExtensionID $ChromeExtensionId -Hive Machine
 # Remove Public user desktop shortcuts because reasons
 
 Remove-Item -Path C:\Users\Public\Desktop\* -Recurse -Force -Confirm:$False
+
+# Enable sleep again by switching to old scheme
+cmd /c "powercfg /setactive $DefaultGUID"
+cmd /c "powercfg /delete    $TempGUID"
