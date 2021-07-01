@@ -7,8 +7,8 @@ Set-Service -Name sshd -StartupType 'Automatic'
 
 # Generate keys
 
-mkdir ~/.ssh
-ssh-keygen -f ~/.ssh/id_rsa -N '""'
+mkdir $HOME/.ssh
+ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
 
-$From = Get-Content -Path ~/.ssh/id_rsa.pub
+$From = Get-Content -Path $HOME/.ssh/id_rsa.pub
 Add-Content -Path \\SENSEI01\share\authorized_keys -Value $From
