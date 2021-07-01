@@ -15,15 +15,14 @@ New-Item C:\ProgramData\ssh\administrators_authorized_keys
 
 Write-Output 'n' | ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
 
-$Source = \\SENSEI01\share\authorized_keys
 $Local = Get-Content -Path $HOME/.ssh/id_rsa.pub
 $Remote =  Get-Content -Path \\SENSEI01\share\authorized_keys
-if (!( $Remote -match $Local )) {
+if (!($Local -in $Remote)) {
   Add-Content -Path \\SENSEI01\share\authorized_keys -Value $Local
 }
 
-Copy-Item -Path $Source -Dest $HOME/.ssh/authorized_keys 
-Copy-Item -Path $Source -Dest C:\ProgramData\ssh\administrators_authorized_keys
+Copy-Item -Path \\SENSEI01\share\authorized_keys -Dest $HOME/.ssh/authorized_keys 
+Copy-Item -Path \\SENSEI01\share\authorized_keys -Dest C:\ProgramData\ssh\administrators_authorized_keys
 
 $acl = Get-Acl C:\ProgramData\ssh\administrators_authorized_keys
 $acl.SetAccessRuleProtection($true, $false)
