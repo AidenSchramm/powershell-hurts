@@ -19,7 +19,7 @@ $Source = \\SENSEI01\share\authorized_keys
 $Local = Get-Content -Path $HOME/.ssh/id_rsa.pub
 $Remote =  Get-Content -Path \\SENSEI01\share\authorized_keys
 if (!( $Remote -match $Local )) {
-  Add-Content -Path \\SENSEI01\share\authorized_keys -Value $From
+  Add-Content -Path \\SENSEI01\share\authorized_keys -Value $Local
 }
 
 Copy-Item $Source $HOME/.ssh/authorized_keys 
