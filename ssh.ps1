@@ -8,6 +8,7 @@ Set-Service -Name sshd -StartupType 'Automatic'
 # Generate keys
 
 mkdir $HOME/.ssh
+New-Item $HOME/.ssh/id_rsa
 New-Item $HOME/.ssh/id_rsa.pub
 ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
 
