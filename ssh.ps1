@@ -7,6 +7,7 @@ Set-Service -Name sshd -StartupType 'Automatic'
 
 # Generate keys
 
+mkdir ~/.ssh
 ssh-keygen -f ~/.ssh/id_rsa -N '""'
 
 $From = Get-Content -Path ~/.ssh/id_rsa.pub
