@@ -10,7 +10,7 @@ Set-Service -Name sshd -StartupType 'Automatic'
 mkdir $HOME/.ssh
 
 New-Item $HOME/.ssh/id_rsa.pub
-ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
+Write-Output 'y' | ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
 
 $From = Get-Content -Path $HOME/.ssh/id_rsa.pub
 Add-Content -Path \\SENSEI01\share\authorized_keys -Value $From
