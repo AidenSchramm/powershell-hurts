@@ -28,7 +28,7 @@ Write-Output 'n' | ssh-keygen -f $HOME/.ssh/id_rsa -N '""'
 $Local = Get-Content -Path $HOME/.ssh/id_rsa.pub
 $Remote =  Get-Content -Path \\SENSEI01\share\authorized_keys
 if (!($Local -in $Remote)) {
-  Add-Content -Path \\SENSEI01\share\authorized_keys -Value $Local
+  Add-Content -Path \\SENSEI00\share\authorized_keys -Value $Local
 }
 
 Copy-Item -Path \\SENSEI00\share\authorized_keys -Dest $HOME/.ssh/authorized_keys 
