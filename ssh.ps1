@@ -31,8 +31,8 @@ if (!($Local -in $Remote)) {
   Add-Content -Path \\SENSEI01\share\authorized_keys -Value $Local
 }
 
-Copy-Item -Path \\SENSEI01\share\authorized_keys -Dest $HOME/.ssh/authorized_keys 
-Copy-Item -Path \\SENSEI01\share\authorized_keys -Dest C:\ProgramData\ssh\administrators_authorized_keys
+Copy-Item -Path \\SENSEI00\share\authorized_keys -Dest $HOME/.ssh/authorized_keys 
+Copy-Item -Path \\SENSEI00\share\authorized_keys -Dest C:\ProgramData\ssh\administrators_authorized_keys
 
 $acl = Get-Acl C:\ProgramData\ssh\administrators_authorized_keys
 $acl.SetAccessRuleProtection($true, $false)
